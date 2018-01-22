@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchForums } from "../actions";
 import { fetchSections } from "../actions";
+import { Link } from "react-router-dom";
 import _ from "lodash";
 // import { Link } from "react-router-dom";
 
-class ForumsShow extends Component {
+class ForumsList extends Component {
   componentDidMount() {
     this.props.fetchForums();
     this.props.fetchSections();
@@ -35,11 +36,20 @@ class ForumsShow extends Component {
             {_.map(forums, forum => {
               return (
                 <tr key={forum.id} className="clickable-row">
-                  <td>{forum.name}</td>
                   <td>
-                    {forum.thread_set.length > 0
-                      ? _.last(forum.thread_set)
-                      : "No recent topics"}
+                    <div>
+                      <Link to={`/forums/${forum.id}`}>{forum.name}</Link>
+                    </div>
+                    <div>{forum.description}</div>
+                  </td>
+                  <td>
+                    {forum.thread_set.length > 0 ? (
+                      <Link to={`/threads/${_.last(forum.thread_set)}`}>
+                        {_.last(forum.thread_set)}
+                      </Link>
+                    ) : (
+                      "No recent topics"
+                    )}
                   </td>
                   <td>{forum.thread_set.length}</td>
                 </tr>
@@ -57,5 +67,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { fetchForums, fetchSections })(
-  ForumsShow
+  ForumsList
 );

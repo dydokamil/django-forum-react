@@ -2,6 +2,9 @@ import axios from "axios";
 
 export const FETCH_FORUMS = "fetch_forums";
 export const FETCH_SECTIONS = "fetch_sections";
+export const FETCH_THREADS = "fetch_threads";
+export const FETCH_THREAD = "fetch_thread";
+export const FETCH_RESPONSES = "fetch_responses";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -19,6 +22,33 @@ export function fetchSections() {
 
   return {
     type: FETCH_SECTIONS,
+    payload: request
+  };
+}
+
+export function fetchThreads(id) {
+  const request = axios.get(`${ROOT_URL}/rest/forum_threads/${id}/`);
+
+  return {
+    type: FETCH_THREADS,
+    payload: request
+  };
+}
+
+export function fetchThread(id) {
+  const request = axios.get(`${ROOT_URL}/rest/threads/${id}/`);
+
+  return {
+    type: FETCH_THREAD,
+    payload: request
+  };
+}
+
+export function fetchResponses(id) {
+  const request = axios.get(`${ROOT_URL}/rest/thread_responses/${id}`);
+
+  return {
+    type: FETCH_RESPONSES,
     payload: request
   };
 }
