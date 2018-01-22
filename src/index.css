@@ -1,5 +1,15 @@
 body {
   margin: 0;
-  padding: 0;
+  padding: 1rem;
   font-family: sans-serif;
+}
+
+.forum-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 1px solid #e9ecef;
+}
+
+.clickable-row:hover {
+  background-color: #eee;
 }
