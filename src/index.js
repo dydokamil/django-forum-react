@@ -9,7 +9,7 @@ import reducers from "./reducers";
 import { Provider } from "react-redux";
 import ForumsList from "./components/forums";
 import Thread from "./components/thread";
-import Login from "./components/login";
+import Login from "./components/login_form";
 import Navbar from "./components/navbar";
 import Signup from "./components/signup";
 import Forum from "./components/forum";

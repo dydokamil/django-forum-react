@@ -4,7 +4,6 @@ import { fetchForums } from "../actions";
 import { fetchSections } from "../actions";
 import { Link } from "react-router-dom";
 import _ from "lodash";
-// import Navbar from "./navbar";
 // import { Link } from "react-router-dom";
 
 class ForumsList extends Component {
@@ -70,6 +69,7 @@ function mapStateToProps(state) {
   return { forums: state.forums, sections: state.sections };
 }
 
-export default connect(mapStateToProps, { fetchForums, fetchSections })(
-  ForumsList
-);
+export default connect(mapStateToProps, {
+  fetchForums,
+  fetchSections
+})(ForumsList);
