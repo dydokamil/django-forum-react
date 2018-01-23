@@ -57,6 +57,12 @@ class Thread extends Component {
             })}
           </tbody>
         </table>
+        <Link
+          to={`/forums/${this.props.thread.forum}`}
+          className="btn btn-info"
+        >
+          Back to {this.props.thread.forum}
+        </Link>
       </div>
     );
   }

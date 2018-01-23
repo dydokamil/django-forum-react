@@ -9,10 +9,20 @@ import reducers from "./reducers";
 import { Provider } from "react-redux";
 import ForumsList from "./components/forums";
 import Thread from "./components/thread";
+import Login from "./components/login";
+import Navbar from "./components/navbar";
+import Signup from "./components/signup";
 import Forum from "./components/forum";
 import promise from "redux-promise";
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+
+ReactDOM.render(
+  <Provider store={createStoreWithMiddleware(reducers)}>
+    <Navbar />
+  </Provider>,
+  document.getElementById("main-navbar")
+);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
@@ -22,6 +32,8 @@ ReactDOM.render(
           <Route path="/threads/:id/" component={Thread} />
           <Route path="/forums/:id" component={Forum} />
           <Route path="/forums" component={ForumsList} />
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
           <Route path="/" component={ForumsList} />
         </Switch>
       </div>
