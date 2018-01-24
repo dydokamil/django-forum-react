@@ -23,8 +23,7 @@ class ForumsList extends Component {
       );
 
       return (
-        <div>
-          {/* <Navbar /> */}
+        <div className="container">
           <table className="table forum-table" key={section.id}>
             <thead>
               <tr>
@@ -37,7 +36,7 @@ class ForumsList extends Component {
             <tbody>
               {_.map(forums, forum => {
                 return (
-                  <tr key={forum.id} className="clickable-row">
+                  <tr className="clickable-row" key={forum.id}>
                     <td>
                       <div>
                         <Link to={`/forums/${forum.id}`}>{forum.name}</Link>

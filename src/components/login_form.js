@@ -1,146 +1,106 @@
-// import React from "react";
-// import { Field, reduxForm } from "redux-form";
-// import { loginAction } from "../actions";
-//
-// const validate = values => {
-//   const errors = {};
-//   if (!values.username) {
-//     errors.username = "Required";
-//   } else if (values.username.length > 20) {
-//     errors.username = "Must be 20 characters or less.";
-//   }
-//   if (!values.password) {
-//     errors.password = "Required";
-//     // } else if (values.password.length > 2048) {
-//     // errors.password = "Can't be longer than 2048 characters.";
-//     // } else if (values.password.length < 8) {
-//     // errors.password = "Can't be shorter than 8 characters.";
-//   }
-//   return errors;
-// };
-//
-// const renderField = ({
-//   input,
-//   label,
-//   type,
-//   meta: { touched, error, warning }
-// }) => (
-//   <div className="form-group">
-//     <label>{label}</label>
-//     <div>
-//       <input
-//         {...input}
-//         placeholder={label}
-//         type={type}
-//         className="form-control"
-//       />
-//       {touched &&
-//         ((error && <span className="text-danger">{error}</span>) ||
-//           (warning && <span className="text-danger">{warning}</span>))}
-//     </div>
-//   </div>
-// );
-//
-// const submit = values2 => {
-//   // console.log("VALUES2values);
-//   loginAction(values2);
-// };
-//
-// const SyncValidationForm = props => {
-//   const { handleSubmit, pristine, reset, submitting } = props;
-//   return (
-//     <form onSubmit={handleSubmit(submit)}>
-//       {/* <form onSubmit={() => handleSubmit(submit)}> */}
-//       <Field
-//         name="username"
-//         type="text"
-//         component={renderField}
-//         label="Username"
-//       />
-//       <Field
-//         name="password"
-//         type="password"
-//         component={renderField}
-//         label="Password"
-//       />
-//       <div>
-//         <button type="submit" className="btn btn-success" disabled={submitting}>
-//           Submit
-//         </button>
-//         <button
-//           type="button"
-//           className="btn btn-warning"
-//           disabled={pristine || submitting}
-//           onClick={reset}
-//         >
-//           Clear Values
-//         </button>
-//       </div>
-//     </form>
-//   );
-// };
-//
-// export default reduxForm({
-//   form: "syncValidation" // a unique identifier for this form
-//   // validate // <--- validation function given to redux-form
-// })(SyncValidationForm);
-
-import React from "react";
+import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
-import { loginAction } from "../actions";
+import { fetchToken } from "../actions";
 import { connect } from "react-redux";
+import _ from "lodash";
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <div>
+  <div className="form-group">
     <label>{label}</label>
     <div>
-      <input {...input} placeholder={label} type={type} />
+      <input
+        {...input}
+        placeholder={label}
+        type={type}
+        className="form-control"
+      />
       {touched && error && <span>{error}</span>}
     </div>
   </div>
 );
 
-// function submit(values) {
-// console.log("ntaoriesnt", values);
-// }
+class SubmitValidationForm extends Component {
+  constructor(props) {
+    super(props);
+    this.submit = this.submit.bind(this);
+  }
 
-const SubmitValidationForm = props => {
-  const {
-    error,
-    handleSubmit,
-    pristine,
-    reset,
-    submitting,
-    loginAction
-  } = props;
+  submit(values) {
+    this.props.fetchToken(values).then(() => {
+      if (
+        this.props.token_details.token &&
+        localStorage.getItem("id_token") === null
+      ) {
+        localStorage.setItem("id_token", this.props.token_details.token);
+      }
 
-  return (
-    <form onSubmit={handleSubmit(loginAction)}>
-      <Field
-        name="username"
-        type="text"
-        component={renderField}
-        label="Username"
-      />
-      <Field
-        name="password"
-        type="password"
-        component={renderField}
-        label="Password"
-      />
-      {error && <strong>{error}</strong>}
-      <div>
-        <button type="submit" disabled={submitting}>
-          Log In
-        </button>
-        <button type="button" disabled={pristine || submitting} onClick={reset}>
-          Clear Values
-        </button>
+      if (!this.props.token_details.errors) {
+        this.props.history.push("/");
+      }
+    });
+  }
+
+  render() {
+    const {
+      error,
+      handleSubmit,
+      pristine,
+      reset,
+      submitting,
+      fetchToken,
+      token_details
+    } = this.props;
+    const { token, errors } = token_details;
+
+    return (
+      <div className="container">
+        <form onSubmit={handleSubmit(this.submit)}>
+          {errors && (
+            <div className="alert alert-danger">
+              {_.map(errors, error => error)}
+            </div>
+          )}
+
+          <Field
+            name="username"
+            type="text"
+            component={renderField}
+            label="Username"
+          />
+          <Field
+            name="password"
+            type="password"
+            component={renderField}
+            label="Password"
+          />
+          {error && <strong>{error}</strong>}
+          <div>
+            <button
+              className="btn btn-success"
+              type="submit"
+              disabled={submitting}
+            >
+              Log In
+            </button>
+            <button
+              className="btn btn-warning"
+              type="button"
+              disabled={pristine || submitting}
+              onClick={reset}
+            >
+              Clear Values
+            </button>
+          </div>
+        </form>
       </div>
-    </form>
-  );
-};
+    );
+  }
+}
 
-export default connect(null, { loginAction })(
+function mapStateToProps(state) {
+  return { token_details: state.token_details };
+}
+
+export default connect(mapStateToProps, { fetchToken })(
   reduxForm({ form: "loginform" })(SubmitValidationForm)
 );

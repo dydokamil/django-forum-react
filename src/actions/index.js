@@ -5,7 +5,7 @@ export const FETCH_SECTIONS = "fetch_sections";
 export const FETCH_THREADS = "fetch_threads";
 export const FETCH_THREAD = "fetch_thread";
 export const FETCH_RESPONSES = "fetch_responses";
-export const LOGIN = "login";
+export const SET_TOKEN = "set_token";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -54,12 +54,11 @@ export function fetchResponses(id) {
   };
 }
 
-export function loginAction(values) {
+export function fetchToken(values) {
   const request = axios.post(`${ROOT_URL}/api-token-auth/`, values);
-  console.log("From actions:", request);
 
   return {
-    type: LOGIN,
+    type: SET_TOKEN,
     payload: request
   };
 }

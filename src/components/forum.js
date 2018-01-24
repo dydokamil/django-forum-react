@@ -15,7 +15,7 @@ class Forum extends Component {
       return <div>Loading...</div>;
     }
     return (
-      <div>
+      <div className="container">
         <table className="table forum-table">
           <thead>
             <tr>

@@ -17,7 +17,7 @@ class Thread extends Component {
     }
 
     return (
-      <div>
+      <div className="container">
         Current forum:{" "}
         <Link to={`/forums/${this.props.thread.forum}`}>
           {this.props.thread.forum}

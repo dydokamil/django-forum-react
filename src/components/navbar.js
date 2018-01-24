@@ -3,7 +3,10 @@ import React, { Component } from "react";
 export default class Navbar extends Component {
   render() {
     return (
-      <nav className="navbar navbar-expand-md bg-dark navbar-dark">
+      <nav
+        id={this.props.id}
+        className="navbar navbar-expand-md bg-dark navbar-dark"
+      >
         <a className="navbar-brand" href="/forums/">
           Forum
         </a>
@@ -29,7 +32,7 @@ export default class Navbar extends Component {
             <li className="nav-item">
               <a className="nav-link" href="/login/">
                 <span className="fa fa-sign-in" />
-                Login
+                {localStorage.getItem("id_token") === null ? "Login" : "Logout"}
               </a>
             </li>
 

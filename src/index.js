@@ -19,15 +19,9 @@ const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
-    <Navbar />
-  </Provider>,
-  document.getElementById("main-navbar")
-);
-
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
     <BrowserRouter>
       <div>
+        <Navbar id={"main-navbar"} />
         <Switch>
           <Route path="/threads/:id/" component={Thread} />
           <Route path="/forums/:id" component={Forum} />
