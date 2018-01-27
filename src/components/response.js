@@ -12,7 +12,7 @@ class Response extends Component {
   }
 
   handleChange(event) {
-    this.setState({ message: event.target.value });
+    this.setState({ message: event.target.value.slice(0, 1000) });
   }
 
   handleSubmit(event) {
@@ -46,8 +46,13 @@ class Response extends Component {
           </button>
         </form>
         {this.props.response_result.msg && (
-          <div style={{ marginTop: "1rem" }}>
+          <div style={{ marginTop: "1rem" }} className="alert alert-success">
             {this.props.response_result.msg}
+          </div>
+        )}
+        {this.props.response_result.errors && (
+          <div style={{ marginTop: "1rem" }} className="alert alert-danger">
+            {this.props.response_result.errors.message}
           </div>
         )}
       </div>
