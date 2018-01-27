@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 import { logout } from "../actions";
 
 class Navbar extends Component {
-  logoutDispatcher() {
+  logoutHandler() {
     const cookies = new Cookies();
     let token = cookies.get("token");
     this.props.logout(token).then(() => {
@@ -49,13 +49,13 @@ class Navbar extends Component {
                 <a
                   href="#"
                   className="nav-link"
-                  onClick={this.logoutDispatcher.bind(this)}
+                  onClick={this.logoutHandler.bind(this)}
                 >
-                  <span className="fa fa-sign-out" />Logout
+                  <span className="fa fa-sign-out" /> Logout
                 </a>
               ) : (
                 <Link className="nav-link" to="/login">
-                  <span className="fa fa-sign-in" />Login
+                  <span className="fa fa-sign-in" /> Login
                 </Link>
               )}
             </li>

@@ -20,7 +20,7 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
   </div>
 );
 
-class SubmitValidationForm extends Component {
+class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.submit = this.submit.bind(this);
@@ -55,6 +55,7 @@ class SubmitValidationForm extends Component {
 
     return (
       <div className="container">
+        <h1>Login</h1>
         <form onSubmit={handleSubmit(this.submit)}>
           {token_details.errors && (
             <div className="alert alert-danger">
@@ -103,5 +104,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, { fetchToken })(
-  reduxForm({ form: "loginform" })(SubmitValidationForm)
+  reduxForm({ form: "loginform" })(LoginForm)
 );

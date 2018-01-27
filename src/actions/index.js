@@ -7,6 +7,7 @@ export const FETCH_THREAD = "fetch_thread";
 export const FETCH_RESPONSES = "fetch_responses";
 export const SET_TOKEN = "set_token";
 export const UNSET_TOKEN = "unset_token";
+export const SIGN_UP = "sign_up";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -73,6 +74,15 @@ export function logout(token) {
 
   return {
     type: UNSET_TOKEN,
+    payload: request
+  };
+}
+
+export function signUp(values) {
+  const request = axios.post(`${ROOT_URL}/rest/signup/`, values);
+
+  return {
+    type: SIGN_UP,
     payload: request
   };
 }

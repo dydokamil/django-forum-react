@@ -15,8 +15,9 @@ import Navbar from "./components/navbar";
 import Signup from "./components/signup";
 import Forum from "./components/forum";
 import promise from "redux-promise";
+import logger from "redux-logger";
 
-const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
+const createStoreWithMiddleware = applyMiddleware(promise, logger)(createStore);
 
 ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
