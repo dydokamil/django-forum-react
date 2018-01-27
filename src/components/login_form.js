@@ -3,7 +3,6 @@ import { Field, reduxForm } from "redux-form";
 import { fetchToken } from "../actions";
 import { connect } from "react-redux";
 import _ from "lodash";
-import Cookies from "universal-cookie";
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div className="form-group">
@@ -28,13 +27,6 @@ class LoginForm extends Component {
 
   submit(values) {
     this.props.fetchToken(values).then(() => {
-      if (this.props.token_details.token) {
-        const cookies = new Cookies();
-        cookies.set("token", this.props.token_details.token, {
-          path: "/"
-        });
-      }
-
       if (!this.props.token_details.error) {
         this.props.history.push("/");
       }

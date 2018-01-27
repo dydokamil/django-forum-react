@@ -1,17 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
-import Cookies from "universal-cookie";
 import { logout } from "../actions";
 
 class Navbar extends Component {
   logoutHandler() {
-    const cookies = new Cookies();
-    const token = cookies.get("token");
-    this.props.logout(token).then(() => {
-      console.log("Removing token...");
-      cookies.remove("token");
-    });
+    const token = this.props.token_details.token;
+    this.props.logout(token);
   }
 
   render() {
@@ -74,7 +69,7 @@ class Navbar extends Component {
 
 function mapStateToProps(state) {
   return {
-    authenticated: state.token_details.authentitated,
+    authenticated: state.token_details.authenticated,
     token_details: state.token_details
   };
 }

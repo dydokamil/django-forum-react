@@ -63,19 +63,25 @@ class Thread extends Component {
         >
           Back to {this.props.thread.forum}
         </Link>
-        <Link
-          className="btn btn-primary"
-          to={`/respond/${this.props.match.params.id}`}
-        >
-          Respond
-        </Link>
+        {this.props.authenticated && (
+          <Link
+            className="btn btn-primary"
+            to={`/respond/${this.props.match.params.id}`}
+          >
+            Respond
+          </Link>
+        )}
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return { thread: state.thread, responses: state.responses };
+  return {
+    thread: state.thread,
+    responses: state.responses,
+    authenticated: state.token_details.authenticated
+  };
 }
 
 export default connect(mapStateToProps, { fetchThread, fetchResponses })(
