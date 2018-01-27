@@ -43,8 +43,6 @@ class LoginForm extends Component {
       token_details
     } = this.props;
 
-    // console.log("ERRORS", token_details.error);
-
     return (
       <div className="container">
         <h1>Login</h1>

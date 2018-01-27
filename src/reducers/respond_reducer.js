@@ -1,12 +1,12 @@
-import { SIGN_UP } from "../actions";
+import { RESPOND } from "../actions";
 
 export default function(state = {}, action) {
   switch (action.type) {
-    case SIGN_UP:
+    case RESPOND:
       if (action.error) {
         return { errors: action.payload.response.data };
       }
-      return action.payload.data;
+      return { msg: "Created response" };
     default:
       return state;
   }

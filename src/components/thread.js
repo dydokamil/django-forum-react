@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { fetchThread } from "../actions";
 import { fetchResponses } from "../actions";
 import { Link } from "react-router-dom";
+import Response from "./response";
 import _ from "lodash";
 
 class Thread extends Component {
@@ -17,7 +18,7 @@ class Thread extends Component {
     }
 
     return (
-      <div className="container">
+      <div className="container" style={{ marginBottom: "2rem" }}>
         Current forum:{" "}
         <Link to={`/forums/${this.props.thread.forum}`}>
           {this.props.thread.forum}
@@ -64,12 +65,9 @@ class Thread extends Component {
           Back to {this.props.thread.forum}
         </Link>
         {this.props.authenticated && (
-          <Link
-            className="btn btn-primary"
-            to={`/respond/${this.props.match.params.id}`}
-          >
-            Respond
-          </Link>
+          <div>
+            <Response thread={this.props.match.params.id} />
+          </div>
         )}
       </div>
     );

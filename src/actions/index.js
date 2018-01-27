@@ -8,6 +8,8 @@ export const FETCH_RESPONSES = "fetch_responses";
 export const SET_TOKEN = "set_token";
 export const UNSET_TOKEN = "unset_token";
 export const SIGN_UP = "sign_up";
+export const GET_TOKEN = "get_token";
+export const RESPOND = "respond_thread";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -65,8 +67,13 @@ export function fetchToken(values) {
   };
 }
 
+export function getToken() {
+  return {
+    type: GET_TOKEN
+  };
+}
+
 export function logout(token) {
-  console.log(token);
   let config = {
     headers: { Authorization: "Token " + token }
   };
@@ -83,6 +90,26 @@ export function signUp(values) {
 
   return {
     type: SIGN_UP,
+    payload: request
+  };
+}
+
+export function respond(thread_id, message, token) {
+  let config = {
+    headers: { Authorization: "Token " + token }
+  };
+
+  const request = axios.post(
+    `${ROOT_URL}/rest/threadresponses/`,
+    {
+      thread: thread_id,
+      message: message
+    },
+    config
+  );
+
+  return {
+    type: RESPOND,
     payload: request
   };
 }
