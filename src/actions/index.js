@@ -6,6 +6,7 @@ export const FETCH_THREADS = "fetch_threads";
 export const FETCH_THREAD = "fetch_thread";
 export const FETCH_RESPONSES = "fetch_responses";
 export const SET_TOKEN = "set_token";
+export const UNSET_TOKEN = "unset_token";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -55,10 +56,23 @@ export function fetchResponses(id) {
 }
 
 export function fetchToken(values) {
-  const request = axios.post(`${ROOT_URL}/api-token-auth/`, values);
+  const request = axios.post(`${ROOT_URL}/rest/api-token-auth/`, values);
 
   return {
     type: SET_TOKEN,
+    payload: request
+  };
+}
+
+export function logout(token) {
+  console.log(token);
+  let config = {
+    headers: { Authorization: "Token " + token }
+  };
+  const request = axios.post(`${ROOT_URL}/rest/logout/`, null, config);
+
+  return {
+    type: UNSET_TOKEN,
     payload: request
   };
 }

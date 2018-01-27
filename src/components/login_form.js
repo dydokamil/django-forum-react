@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import { fetchToken } from "../actions";
 import { connect } from "react-redux";
 import _ from "lodash";
+import Cookies from "universal-cookie";
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div className="form-group">
@@ -27,11 +28,12 @@ class SubmitValidationForm extends Component {
 
   submit(values) {
     this.props.fetchToken(values).then(() => {
-      if (
-        this.props.token_details.token &&
-        localStorage.getItem("id_token") === null
-      ) {
-        localStorage.setItem("id_token", this.props.token_details.token);
+      if (this.props.token_details.token) {
+        // sessionStorage.setItem("id_token", this.props.token_details.token);
+        const cookies = new Cookies();
+        cookies.set("token", this.props.token_details.token, {
+          path: "/"
+        });
       }
 
       if (!this.props.token_details.errors) {
@@ -50,14 +52,13 @@ class SubmitValidationForm extends Component {
       fetchToken,
       token_details
     } = this.props;
-    const { token, errors } = token_details;
 
     return (
       <div className="container">
         <form onSubmit={handleSubmit(this.submit)}>
-          {errors && (
+          {token_details.errors && (
             <div className="alert alert-danger">
-              {_.map(errors, error => error)}
+              {_.map(token_details.errors, error => error)}
             </div>
           )}
 
