@@ -4,7 +4,6 @@ import "./index.css";
 // import App from "./App";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import registerServiceWorker from "./registerServiceWorker";
-import reduxThunk from "redux-thunk";
 import { createStore, applyMiddleware } from "redux";
 import reducers from "./reducers";
 import { Provider } from "react-redux";

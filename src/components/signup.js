@@ -3,7 +3,6 @@ import { Field, reduxForm } from "redux-form";
 import { signUp } from "../actions";
 import { connect } from "react-redux";
 import _ from "lodash";
-import Cookies from "universal-cookie";
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div className="form-group">
@@ -13,9 +12,9 @@ const renderField = ({ input, label, type, meta: { touched, error } }) => (
         {...input}
         placeholder={label}
         type={type}
-        className="form-control"
+        className={`form-control ${error && touched ? "is-invalid" : ""}`}
       />
-      {touched && error && <span>{error}</span>}
+      {touched && error && <span className="text-danger">{error}</span>}
     </div>
   </div>
 );
@@ -27,7 +26,7 @@ class SignupForm extends Component {
   }
 
   submit(values) {
-    this.props.signUp(values).then(() => {});
+    this.props.signUp(values);
   }
 
   render() {
@@ -37,7 +36,6 @@ class SignupForm extends Component {
       pristine,
       reset,
       submitting,
-      signUp,
       sign_up,
       invalid
     } = this.props;
@@ -53,7 +51,7 @@ class SignupForm extends Component {
           )}
           {sign_up.username && (
             <div className="alert alert-success">
-              User {sign_up.username} created successfully
+              User {sign_up.username} created successfully.
             </div>
           )}
 
@@ -104,23 +102,17 @@ function validate(values) {
   if (!values.username) {
     errors.username = "Required";
   } else if (values.username.length > 15) {
-    errors.username = "Must be 15 characters or less";
+    errors.username = "Must be 15 characters or less.";
   }
 
   if (!values.password1) {
     errors.password1 = "Required";
   } else if (values.password1.length <= 6) {
-    errors.password1 = "Must be 6 characters or more";
+    errors.password1 = "Must be 6 characters or more.";
   }
 
-  if (!values.password2) {
-    errors.password2 = "Required";
-  }
-
-  if (values.password1 && values.password2) {
-    if (values.password1 !== values.password2) {
-      errors.password2 = "Passwords don't match";
-    }
+  if (values.password1 !== values.password2) {
+    errors.password2 = "Passwords don't match.";
   }
 
   return errors;

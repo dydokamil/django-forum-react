@@ -29,14 +29,13 @@ class LoginForm extends Component {
   submit(values) {
     this.props.fetchToken(values).then(() => {
       if (this.props.token_details.token) {
-        // sessionStorage.setItem("id_token", this.props.token_details.token);
         const cookies = new Cookies();
         cookies.set("token", this.props.token_details.token, {
           path: "/"
         });
       }
 
-      if (!this.props.token_details.errors) {
+      if (!this.props.token_details.error) {
         this.props.history.push("/");
       }
     });
@@ -49,17 +48,18 @@ class LoginForm extends Component {
       pristine,
       reset,
       submitting,
-      fetchToken,
       token_details
     } = this.props;
+
+    // console.log("ERRORS", token_details.error);
 
     return (
       <div className="container">
         <h1>Login</h1>
         <form onSubmit={handleSubmit(this.submit)}>
-          {token_details.errors && (
+          {token_details.error && (
             <div className="alert alert-danger">
-              {_.map(token_details.errors, error => error)}
+              {_.map(token_details.error, error => error[0])}
             </div>
           )}
 

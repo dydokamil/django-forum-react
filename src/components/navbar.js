@@ -7,14 +7,14 @@ import { logout } from "../actions";
 class Navbar extends Component {
   logoutHandler() {
     const cookies = new Cookies();
-    let token = cookies.get("token");
+    const token = cookies.get("token");
     this.props.logout(token).then(() => {
+      console.log("Removing token...");
       cookies.remove("token");
     });
   }
 
   render() {
-    const cookies = new Cookies();
     const authenticated = this.props.authenticated;
 
     return (
@@ -46,13 +46,12 @@ class Navbar extends Component {
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
               {authenticated ? (
-                <a
-                  href="#"
-                  className="nav-link"
+                <ul
+                  className="cursor-pointer nav-link"
                   onClick={this.logoutHandler.bind(this)}
                 >
                   <span className="fa fa-sign-out" /> Logout
-                </a>
+                </ul>
               ) : (
                 <Link className="nav-link" to="/login">
                   <span className="fa fa-sign-in" /> Login
