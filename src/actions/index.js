@@ -10,6 +10,7 @@ export const UNSET_TOKEN = "unset_token";
 export const SIGN_UP = "sign_up";
 export const GET_TOKEN = "get_token";
 export const RESPOND = "respond_thread";
+export const FETCH_USER = "fetch_user";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -110,6 +111,15 @@ export function respond(thread_id, message, token) {
 
   return {
     type: RESPOND,
+    payload: request
+  };
+}
+
+export function fetchUser(id) {
+  const request = axios.get(`${ROOT_URL}/rest/users/${id}`);
+
+  return {
+    type: FETCH_USER,
     payload: request
   };
 }

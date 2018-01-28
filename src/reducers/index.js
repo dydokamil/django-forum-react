@@ -7,6 +7,7 @@ import responsesReducer from "./responses_reducer";
 import tokenReducer from "./token_reducer";
 import signupReducer from "./signup_reducer";
 import responseReducer from "./respond_reducer";
+import userReducer from "./user_reducer";
 import { reducer as formReducer } from "redux-form";
 
 const rootReducer = combineReducers({
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   form: formReducer,
   token_details: tokenReducer,
   sign_up: signupReducer,
-  response_result: responseReducer
+  response_result: responseReducer,
+  users: userReducer
 });
 
 export default rootReducer;
