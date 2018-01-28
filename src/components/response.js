@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { respond } from "../actions";
+import { respond, fetchResponses } from "../actions";
 
 class Response extends Component {
   constructor(props) {
@@ -18,11 +17,15 @@ class Response extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    this.props.respond(
-      this.props.thread,
-      this.state.message,
-      this.props.token_details.token
-    );
+    this.props
+      .respond(
+        this.props.thread,
+        this.state.message,
+        this.props.token_details.token
+      )
+      .then(() => {
+        this.props.fetchResponses(this.props.thread);
+      });
   }
 
   render() {
@@ -67,4 +70,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { respond })(Response);
+export default connect(mapStateToProps, { respond, fetchResponses })(Response);
