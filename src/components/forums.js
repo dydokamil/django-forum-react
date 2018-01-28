@@ -18,9 +18,12 @@ class ForumsList extends Component {
     }
 
     return _.map(this.props.sections, section => {
-      let forums = this.props.forums.filter(
-        forum => forum.section === section.id
-      );
+      // console.log("LOG", this.props.forums);
+      // let forums = this.props.forums.filter(
+      // forum => forum.section === section.id
+      // );
+      let forums = _.filter(this.props.forums, { section: section.id });
+      // console.log(forums);
 
       return (
         <div className="container">

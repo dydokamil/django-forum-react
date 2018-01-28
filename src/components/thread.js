@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchResponses, fetchUser, fetchThread } from "../actions";
+import { fetchResponses, fetchUser, fetchThread, fetchForum } from "../actions";
 import { Link } from "react-router-dom";
 import Response from "./response";
 import _ from "lodash";
 
 class Thread extends Component {
   componentDidMount() {
-    this.props.fetchThread(this.props.match.params.id);
+    this.props.fetchThread(this.props.match.params.id).then(() => {
+      this.props.fetchForum(this.props.thread.forum);
+    });
     this.props.fetchResponses(this.props.match.params.id).then(() => {
       let responders = this.props.responses.map(response => response.responder);
       const threadCreator = this.props.thread.creator;
@@ -29,7 +31,9 @@ class Thread extends Component {
       <div className="container" style={{ marginBottom: "2rem" }}>
         Current forum:{" "}
         <Link to={`/forums/${this.props.thread.forum}`}>
-          {this.props.thread.forum}
+          {this.props.forums && this.props.forums[this.props.thread.forum]
+            ? this.props.forums[this.props.thread.forum].name
+            : this.props.thread.forum}
         </Link>
         <table className="table forum-table">
           <thead>
@@ -80,7 +84,10 @@ class Thread extends Component {
           to={`/forums/${this.props.thread.forum}`}
           className="btn btn-info"
         >
-          Back to {this.props.thread.forum}
+          Back to{" "}
+          {this.props.forums && this.props.forums[this.props.thread.forum]
+            ? this.props.forums[this.props.thread.forum].name
+            : this.props.thread.forum}
         </Link>
         {this.props.authenticated && (
           <div>
@@ -97,12 +104,14 @@ function mapStateToProps(state) {
     thread: state.thread,
     responses: state.responses,
     authenticated: state.token_details.authenticated,
-    users: state.users
+    users: state.users,
+    forums: state.forums
   };
 }
 
 export default connect(mapStateToProps, {
   fetchThread,
   fetchResponses,
-  fetchUser
+  fetchUser,
+  fetchForum
 })(Thread);

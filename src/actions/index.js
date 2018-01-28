@@ -1,6 +1,7 @@
 import axios from "axios";
 
 export const FETCH_FORUMS = "fetch_forums";
+export const FETCH_FORUM = "fetch_forum";
 export const FETCH_SECTIONS = "fetch_sections";
 export const FETCH_THREADS = "fetch_threads";
 export const FETCH_THREAD = "fetch_thread";
@@ -19,6 +20,15 @@ export function fetchForums() {
 
   return {
     type: FETCH_FORUMS,
+    payload: request
+  };
+}
+
+export function fetchForum(id) {
+  const request = axios.get(`${ROOT_URL}/rest/forums/${id}`);
+
+  return {
+    type: FETCH_FORUM,
     payload: request
   };
 }
