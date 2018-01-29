@@ -26,9 +26,7 @@ class SignupForm extends Component {
   }
 
   submit(values) {
-    this.props.signUp(values).catch(error => {
-      console.log("HERE ERROR", error.status);
-    });
+    this.props.signUp(values);
   }
 
   render() {

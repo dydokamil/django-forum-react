@@ -12,6 +12,7 @@ export const SIGN_UP = "sign_up";
 export const GET_TOKEN = "get_token";
 export const RESPOND = "respond_thread";
 export const FETCH_USER = "fetch_user";
+export const CREATE_THREAD = "create_thread";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -130,6 +131,32 @@ export function fetchUser(id) {
 
   return {
     type: FETCH_USER,
+    payload: request
+  };
+}
+
+export function newThread(forum, name, message, token) {
+  console.log({
+    forum: forum,
+    name: name,
+    message: message
+  });
+  let config = {
+    headers: { Authorization: "Token " + token }
+  };
+
+  const request = axios.post(
+    `${ROOT_URL}/rest/threads/`,
+    {
+      forum: forum,
+      name: name,
+      message: message
+    },
+    config
+  );
+
+  return {
+    type: CREATE_THREAD,
     payload: request
   };
 }

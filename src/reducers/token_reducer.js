@@ -26,8 +26,8 @@ export default function(state = INITIAL_STATE, action) {
 
     case UNSET_TOKEN:
       // if logout was called
-      cookies.remove("token");
-      return { ...state, token: null, authenticated: false, error: null };
+      cookies.remove("token", { path: "/" });
+      return { ...state, token: undefined, authenticated: false, error: null };
     case GET_TOKEN:
     default:
       return state;

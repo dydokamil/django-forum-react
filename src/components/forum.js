@@ -32,14 +32,24 @@ class Forum extends Component {
                     <Link to={`/threads/${thread.id}`}>{thread.name}</Link>
                   </td>
                   <td>replies</td>
-                  <td>last activity</td>
+                  <td>{thread.last_activity}</td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-        <Link to={"/forums"} className="btn btn-info">
-          Forums list
+        <Link
+          to={"/forums"}
+          className="btn btn-info"
+          style={{ marginRight: ".5rem" }}
+        >
+          <span className="fa fa-list" /> Forums list
+        </Link>
+        <Link
+          to={`/new_thread/${this.props.match.params.id}`}
+          className="btn btn-success"
+        >
+          <span className="fa fa-plus" /> New thread
         </Link>
       </div>
     );

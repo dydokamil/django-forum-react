@@ -10,8 +10,6 @@ class Navbar extends Component {
   }
 
   render() {
-    const authenticated = this.props.authenticated;
-
     return (
       <nav
         id={this.props.id}
@@ -40,7 +38,7 @@ class Navbar extends Component {
           </ul>
           <ul className="navbar-nav ml-auto">
             <li className="nav-item">
-              {authenticated ? (
+              {this.props.authenticated ? (
                 <ul
                   className="cursor-pointer nav-link"
                   onClick={this.logoutHandler.bind(this)}

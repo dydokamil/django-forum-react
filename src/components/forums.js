@@ -18,12 +18,7 @@ class ForumsList extends Component {
     }
 
     return _.map(this.props.sections, section => {
-      // console.log("LOG", this.props.forums);
-      // let forums = this.props.forums.filter(
-      // forum => forum.section === section.id
-      // );
       let forums = _.filter(this.props.forums, { section: section.id });
-      // console.log(forums);
 
       return (
         <div className="container">
@@ -46,16 +41,8 @@ class ForumsList extends Component {
                       </div>
                       <div>{forum.description}</div>
                     </td>
-                    <td>
-                      {forum.thread_set.length > 0 ? (
-                        <Link to={`/threads/${_.last(forum.thread_set)}`}>
-                          {_.last(forum.thread_set)}
-                        </Link>
-                      ) : (
-                        "No recent topics"
-                      )}
-                    </td>
-                    <td>{forum.thread_set.length}</td>
+                    <td>Recent topic placeholder</td>
+                    <td>Threads length placeholder</td>
                   </tr>
                 );
               })}

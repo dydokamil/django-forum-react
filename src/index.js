@@ -12,6 +12,7 @@ import Thread from "./components/thread";
 import Login from "./components/login_form";
 import Navbar from "./components/navbar";
 import Signup from "./components/signup";
+import NewThread from "./components/new_thread";
 import Forum from "./components/forum";
 import promise from "redux-promise";
 import logger from "redux-logger";
@@ -26,6 +27,7 @@ ReactDOM.render(
         <Switch>
           <Route path="/threads/:id/" component={Thread} />
           <Route path="/forums/:id" component={Forum} />
+          <Route path="/new_thread/:id" component={NewThread} />
           <Route path="/forums" component={ForumsList} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />
