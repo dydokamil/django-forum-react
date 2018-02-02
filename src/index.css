@@ -41,3 +41,26 @@ html {
 td {
   word-wrap: break-word;
 }
+
+.card-block {
+  padding: 1.25rem;
+}
+
+.card-responses {
+  padding-top: 0.5rem;
+  border-top: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  padding-bottom: 0.5rem;
+}
+
+.card-response {
+  margin-bottom: 0.5rem;
+  margin-left: 0.75rem;
+  margin-right: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.pointer {
+  cursor: pointer;
+}

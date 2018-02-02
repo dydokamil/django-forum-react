@@ -55,9 +55,17 @@ class Thread extends Component {
                 <hr />
                 <div>
                   User:{" "}
-                  {this.props.users[this.props.thread.creator]
-                    ? this.props.users[this.props.thread.creator].username
-                    : this.props.thread.creator}
+                  {this.props.users[this.props.thread.creator] ? (
+                    <Link
+                      to={`/users/${
+                        this.props.users[this.props.thread.creator].id
+                      }`}
+                    >
+                      {this.props.users[this.props.thread.creator].username}
+                    </Link>
+                  ) : (
+                    this.props.thread.creator
+                  )}
                 </div>
               </td>
             </tr>
@@ -70,9 +78,17 @@ class Thread extends Component {
                     <hr />
                     <div>
                       User:{" "}
-                      {this.props.users[response.responder]
-                        ? this.props.users[response.responder].username
-                        : response.responder}
+                      {this.props.users[response.responder] ? (
+                        <Link
+                          to={`/users/${
+                            this.props.users[response.responder].id
+                          }`}
+                        >
+                          {this.props.users[response.responder].username}
+                        </Link>
+                      ) : (
+                        response.responder
+                      )}
                     </div>
                   </td>
                 </tr>
@@ -84,7 +100,7 @@ class Thread extends Component {
           to={`/forums/${this.props.thread.forum}`}
           className="btn btn-info"
         >
-          Back to{" "}
+          <span className="fa fa-caret-left" /> Back to{" "}
           {this.props.forums && this.props.forums[this.props.thread.forum]
             ? this.props.forums[this.props.thread.forum].name
             : this.props.thread.forum}

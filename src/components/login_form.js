@@ -28,7 +28,7 @@ class LoginForm extends Component {
   submit(values) {
     this.props.fetchToken(values).then(() => {
       if (!this.props.token_details.error) {
-        this.props.history.push("/");
+        this.props.history.goBack();
       }
     });
   }

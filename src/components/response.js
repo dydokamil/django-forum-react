@@ -43,9 +43,9 @@ class Response extends Component {
           <button
             disabled={this.state.message === ""}
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-success"
           >
-            Respond
+            <span className="fa fa-share" /> Respond
           </button>
         </form>
         {this.props.response_result.msg && (

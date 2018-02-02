@@ -11,6 +11,7 @@ import ForumsList from "./components/forums";
 import Thread from "./components/thread";
 import Login from "./components/login_form";
 import Navbar from "./components/navbar";
+import UserProfile from "./components/user_profile";
 import Signup from "./components/signup";
 import NewThread from "./components/new_thread";
 import Forum from "./components/forum";
@@ -28,6 +29,7 @@ ReactDOM.render(
           <Route path="/threads/:id/" component={Thread} />
           <Route path="/forums/:id" component={Forum} />
           <Route path="/new_thread/:id" component={NewThread} />
+          <Route path="/users/:id" component={UserProfile} />
           <Route path="/forums" component={ForumsList} />
           <Route path="/login" component={Login} />
           <Route path="/signup" component={Signup} />

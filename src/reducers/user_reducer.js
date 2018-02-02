@@ -4,8 +4,7 @@ export default function(state = {}, action) {
   switch (action.type) {
     case FETCH_USER:
       if (action.error) {
-        // hadle the error
-        console.log(action.payload);
+        return { errors: action.payload.response.data };
       }
       return { ...state, [action.payload.data.id]: action.payload.data };
 
