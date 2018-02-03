@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser } from "../actions";
+import { fetchUser, fetchManyThreads, fetchManyResponses } from "../actions";
 import _ from "lodash";
+import { Link } from "react-router-dom";
 
 class UserProfile extends Component {
   constructor(props) {
@@ -10,8 +11,24 @@ class UserProfile extends Component {
     this.setResponses = this.setResponses.bind(this);
     this.setThreads = this.setThreads.bind(this);
   }
+
   componentDidMount() {
-    this.props.fetchUser(this.props.match.params.id);
+    this.props.fetchUser(this.props.match.params.id).then(() => {
+      this.props.fetchManyThreads(
+        this.props.users[this.props.match.params.id].user_threads
+      );
+      this.props
+        .fetchManyResponses(
+          this.props.users[this.props.match.params.id].user_responses
+        )
+        .then(() => {
+          const threads = _.map(
+            this.props.responses,
+            response => response.thread
+          );
+          this.props.fetchManyThreads(threads);
+        });
+    });
   }
 
   setResponses() {
@@ -23,7 +40,11 @@ class UserProfile extends Component {
   }
 
   render() {
-    if (_.isEmpty(this.props.users)) {
+    if (
+      _.isEmpty(this.props.users) ||
+      _.isEmpty(this.props.responses) ||
+      _.isEmpty(this.props.threads)
+    ) {
       return <div className="container">Loading...</div>;
     }
 
@@ -32,6 +53,8 @@ class UserProfile extends Component {
     }
 
     const user = this.props.users[this.props.match.params.id];
+    const responses = user.user_responses;
+    const threads = user.user_threads;
 
     return (
       <div className="container">
@@ -66,17 +89,51 @@ class UserProfile extends Component {
         </ul>
         <div className="card card-responses">
           {this.state.current == "responses"
-            ? user.user_responses.map(response => {
+            ? responses.map(response => {
                 return (
                   <div className="card card-response">
-                    <div className="card-block">{response}</div>
+                    <div className="card-block">
+                      <h6>{this.props.responses[response].message}</h6>
+                      <small>
+                        {this.props.responses[response].created_datetime}
+                      </small>
+                      <div>
+                        In:{" "}
+                        {this.props.threads[
+                          this.props.responses[response].thread
+                        ] && (
+                          <Link
+                            to={`/threads/${
+                              this.props.threads[
+                                this.props.responses[response].thread
+                              ].id
+                            }`}
+                          >
+                            {
+                              this.props.threads[
+                                this.props.responses[response].thread
+                              ].name
+                            }
+                          </Link>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 );
               })
-            : user.user_threads.map(thread => {
+            : threads.map(thread => {
                 return (
                   <div className="card card-response">
-                    <div className="card-block">{thread}</div>
+                    <div className="card-block">
+                      <Link to={`/threads/${thread}`}>
+                        <h6>{this.props.threads[thread].name}</h6>
+                      </Link>
+                      <small>
+                        {this.props.threads[thread].created_datetime}
+                      </small>
+                      <hr />
+                      <div>{this.props.threads[thread].message}</div>
+                    </div>
                   </div>
                 );
               })}
@@ -87,7 +144,15 @@ class UserProfile extends Component {
 }
 
 function mapStateToProps(state) {
-  return { users: state.users };
+  return {
+    users: state.users,
+    responses: state.responses,
+    threads: state.threads
+  };
 }
 
-export default connect(mapStateToProps, { fetchUser })(UserProfile);
+export default connect(mapStateToProps, {
+  fetchUser,
+  fetchManyThreads,
+  fetchManyResponses
+})(UserProfile);

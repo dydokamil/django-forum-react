@@ -11,7 +11,10 @@ class Thread extends Component {
       this.props.fetchForum(this.props.thread.forum);
     });
     this.props.fetchResponses(this.props.match.params.id).then(() => {
-      let responders = this.props.responses.map(response => response.responder);
+      let responders = _.map(
+        this.props.responses,
+        response => response.responder
+      );
       const threadCreator = this.props.thread.creator;
 
       responders = new Set(responders.concat(threadCreator));

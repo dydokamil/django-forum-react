@@ -53,10 +53,31 @@ export function fetchThreads(id) {
 }
 
 export function fetchThread(id) {
+  console.log(id);
   const request = axios.get(`${ROOT_URL}/rest/threads/${id}/`);
 
   return {
     type: FETCH_THREAD,
+    payload: request
+  };
+}
+
+export function fetchManyThreads(ids) {
+  const request = axios.get(`${ROOT_URL}/rest/threads_bulk/`, {
+    params: { threads: ids }
+  });
+  return {
+    type: FETCH_THREADS,
+    payload: request
+  };
+}
+
+export function fetchManyResponses(ids) {
+  const request = axios.get(`${ROOT_URL}/rest/responses_bulk/`, {
+    params: { responses: ids }
+  });
+  return {
+    type: FETCH_RESPONSES,
     payload: request
   };
 }
