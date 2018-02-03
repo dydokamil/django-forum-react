@@ -18,11 +18,13 @@ class ForumsList extends Component {
     }
 
     return _.map(this.props.sections, section => {
-      let forums = _.filter(this.props.forums, { section: section.id });
+      let forums = _.filter(this.props.forums, {
+        section: section.id
+      });
 
       return (
         <div className="container">
-          <table className="table forum-table" key={section.id}>
+          <table className="table forum-table">
             <thead>
               <tr>
                 <th>{section.name.toUpperCase()}</th>

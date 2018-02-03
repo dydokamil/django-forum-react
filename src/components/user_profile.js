@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUser, fetchManyThreads, fetchManyResponses } from "../actions";
+import {
+  fetchUser,
+  fetchManyThreads,
+  fetchManyResponses,
+  clearResponses
+} from "../actions";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 
@@ -12,7 +17,7 @@ class UserProfile extends Component {
     this.setThreads = this.setThreads.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchUser(this.props.match.params.id).then(() => {
       this.props.fetchManyThreads(
         this.props.users[this.props.match.params.id].user_threads
@@ -40,11 +45,7 @@ class UserProfile extends Component {
   }
 
   render() {
-    if (
-      _.isEmpty(this.props.users) ||
-      _.isEmpty(this.props.responses) ||
-      _.isEmpty(this.props.threads)
-    ) {
+    if (_.isEmpty(this.props.users)) {
       return <div className="container">Loading...</div>;
     }
 
@@ -79,7 +80,7 @@ class UserProfile extends Component {
             <a
               id="threads"
               className={`nav-link pointer ${
-                this.state.current == "threads" ? "active" : ""
+                this.state.current === "threads" ? "active" : ""
               }`}
               onClick={this.setThreads}
             >
@@ -88,20 +89,27 @@ class UserProfile extends Component {
           </li>
         </ul>
         <div className="card card-responses">
-          {this.state.current == "responses"
+          {this.state.current === "responses"
             ? responses.map(response => {
                 return (
-                  <div className="card card-response">
+                  <div key={response} className="card card-response">
                     <div className="card-block">
-                      <h6>{this.props.responses[response].message}</h6>
+                      <h6>
+                        {this.props.responses[response]
+                          ? this.props.responses[response].message
+                          : "Loading"}
+                      </h6>
                       <small>
-                        {this.props.responses[response].created_datetime}
+                        {this.props.responses[response]
+                          ? this.props.responses[response].created_datetime
+                          : "Loading..."}
                       </small>
                       <div>
                         In:{" "}
-                        {this.props.threads[
+                        {this.props.responses[response] &&
+                        this.props.threads[
                           this.props.responses[response].thread
-                        ] && (
+                        ] ? (
                           <Link
                             to={`/threads/${
                               this.props.threads[
@@ -115,6 +123,8 @@ class UserProfile extends Component {
                               ].name
                             }
                           </Link>
+                        ) : (
+                          "Loading"
                         )}
                       </div>
                     </div>
@@ -123,7 +133,7 @@ class UserProfile extends Component {
               })
             : threads.map(thread => {
                 return (
-                  <div className="card card-response">
+                  <div key={thread} className="card card-response">
                     <div className="card-block">
                       <Link to={`/threads/${thread}`}>
                         <h6>{this.props.threads[thread].name}</h6>
@@ -154,5 +164,6 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchUser,
   fetchManyThreads,
-  fetchManyResponses
+  fetchManyResponses,
+  clearResponses
 })(UserProfile);
