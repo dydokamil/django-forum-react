@@ -44,7 +44,7 @@ class ForumsList extends Component {
                       <div>{forum.description}</div>
                     </td>
                     <td>Recent topic placeholder</td>
-                    <td>Threads length placeholder</td>
+                    <td>{forum.thread_set.length}</td>
                   </tr>
                 );
               })}

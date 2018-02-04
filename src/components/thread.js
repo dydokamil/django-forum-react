@@ -6,6 +6,13 @@ import Response from "./response";
 import _ from "lodash";
 
 class Thread extends Component {
+  constructor(props) {
+    super(props);
+
+    this.deleteThread = this.deleteThread.bind(this);
+    this.deleteResponse = this.deleteResponse.bind(this);
+  }
+
   componentDidMount() {
     this.props.fetchThread(this.props.match.params.id).then(() => {
       this.props.fetchForum(this.props.thread.forum);
@@ -23,6 +30,27 @@ class Thread extends Component {
         this.props.fetchUser(responder);
       });
     });
+  }
+
+  deleteThread(event, id) {
+    console.log("deleteThread");
+    console.log(event);
+    console.log(id);
+  }
+
+  deleteResponse(event, id) {
+    console.log("deleteResponse");
+    console.log(id);
+  }
+
+  editResponse(event, id) {
+    console.log("editResponse");
+    console.log(id);
+  }
+
+  editThread(event, id) {
+    console.log("editThread");
+    console.log(id);
   }
 
   render() {
@@ -56,19 +84,41 @@ class Thread extends Component {
                   )}
                 </div>
                 <hr />
-                <div>
-                  User:{" "}
-                  {this.props.users[this.props.thread.creator] ? (
-                    <Link
-                      to={`/users/${
-                        this.props.users[this.props.thread.creator].id
-                      }`}
-                    >
-                      {this.props.users[this.props.thread.creator].username}
-                    </Link>
-                  ) : (
-                    this.props.thread.creator
-                  )}
+                <div className="row">
+                  <div className="col-lg-6">
+                    User:{" "}
+                    {this.props.users[this.props.thread.creator] ? (
+                      <Link
+                        to={`/users/${
+                          this.props.users[this.props.thread.creator].id
+                        }`}
+                      >
+                        {this.props.users[this.props.thread.creator].username}
+                      </Link>
+                    ) : (
+                      this.props.thread.creator
+                    )}
+                  </div>
+                  <div className="col-lg-6 float-right">
+                    <span className="float-lg-right">
+                      <button
+                        className="btn btn-info"
+                        onClick={event => {
+                          this.editThread(event, this.props.thread.id);
+                        }}
+                      >
+                        <span className="fa fa-pencil" /> Edit
+                      </button>
+                      <button
+                        onClick={event => {
+                          this.deleteThread(event, this.props.thread.id);
+                        }}
+                        className="btn btn-danger"
+                      >
+                        <span className="fa fa-trash" /> Delete
+                      </button>
+                    </span>
+                  </div>
                 </div>
               </td>
             </tr>
@@ -79,19 +129,42 @@ class Thread extends Component {
                     <div>{response.created_datetime}</div>
                     <div>{response.message}</div>
                     <hr />
-                    <div>
-                      User:{" "}
-                      {this.props.users[response.responder] ? (
-                        <Link
-                          to={`/users/${
-                            this.props.users[response.responder].id
-                          }`}
-                        >
-                          {this.props.users[response.responder].username}
-                        </Link>
-                      ) : (
-                        response.responder
-                      )}
+                    <div className="row">
+                      <div className="col-lg-6">
+                        User:{" "}
+                        {this.props.users[response.responder] ? (
+                          <Link
+                            to={`/users/${
+                              this.props.users[response.responder].id
+                            }`}
+                          >
+                            {this.props.users[response.responder].username}
+                          </Link>
+                        ) : (
+                          response.responder
+                        )}
+                      </div>
+
+                      <div className="col-lg-6 float-right">
+                        <span className="float-lg-right">
+                          <button
+                            className="btn btn-info"
+                            onClick={event => {
+                              this.editResponse(event, response.id);
+                            }}
+                          >
+                            <span className="fa fa-pencil" /> Edit
+                          </button>
+                          <button
+                            onClick={event => {
+                              this.deleteResponse(event, response.id);
+                            }}
+                            className="btn btn-danger"
+                          >
+                            <span className="fa fa-trash" /> Delete
+                          </button>
+                        </span>
+                      </div>
                     </div>
                   </td>
                 </tr>

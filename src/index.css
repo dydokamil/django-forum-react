@@ -64,3 +64,11 @@ td {
 .pointer {
   cursor: pointer;
 }
+
+.pinned-thread {
+  background-color: #efffef;
+}
+
+.right-align {
+  float: right;
+}

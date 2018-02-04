@@ -14,6 +14,13 @@ class Forum extends Component {
     if (!this.props.threads) {
       return <div>Loading...</div>;
     }
+
+    const threads = _.orderBy(
+      this.props.threads,
+      ["pinned", "last_activity"],
+      ["desc", "desc"]
+    );
+
     return (
       <div className="container">
         <table className="table forum-table">
@@ -25,13 +32,16 @@ class Forum extends Component {
             </tr>
           </thead>
           <tbody>
-            {_.map(this.props.threads, thread => {
+            {_.map(threads, thread => {
               return (
-                <tr key={thread.id}>
+                <tr
+                  className={`${thread.pinned ? "pinned-thread" : ""}`}
+                  key={thread.id}
+                >
                   <td>
                     <Link to={`/threads/${thread.id}`}>{thread.name}</Link>
                   </td>
-                  <td>replies</td>
+                  <td>{thread.threadresponse_set.length}</td>
                   <td>{thread.last_activity}</td>
                 </tr>
               );
@@ -45,19 +55,21 @@ class Forum extends Component {
         >
           <span className="fa fa-list" /> Forums list
         </Link>
-        <Link
-          to={`/new_thread/${this.props.match.params.id}`}
-          className="btn btn-success"
-        >
-          <span className="fa fa-plus" /> New thread
-        </Link>
+        {this.props.token_details.authenticated && (
+          <Link
+            to={`/new_thread/${this.props.match.params.id}`}
+            className="btn btn-success"
+          >
+            <span className="fa fa-plus" /> New thread
+          </Link>
+        )}
       </div>
     );
   }
 }
 
 function mapStateToProps(state) {
-  return { threads: state.threads };
+  return { threads: state.threads, token_details: state.token_details };
 }
 
 export default connect(mapStateToProps, { fetchThreads })(Forum);
