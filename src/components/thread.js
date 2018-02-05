@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchResponses, fetchUser, fetchThread, fetchForum } from "../actions";
+import {
+  fetchResponses,
+  fetchUser,
+  fetchThread,
+  fetchForum,
+  deleteResponse,
+  deleteThread
+} from "../actions";
 import { Link } from "react-router-dom";
 import Response from "./response";
 import _ from "lodash";
@@ -20,7 +27,7 @@ class Thread extends Component {
     this.props.fetchResponses(this.props.match.params.id).then(() => {
       let responders = _.map(
         this.props.responses,
-        response => response.responder
+        response => response.creator
       );
       const threadCreator = this.props.thread.creator;
 
@@ -34,13 +41,11 @@ class Thread extends Component {
 
   deleteThread(event, id) {
     console.log("deleteThread");
-    console.log(event);
-    console.log(id);
+    this.props.deleteThread(id, this.props.token_details.token);
   }
 
   deleteResponse(event, id) {
-    console.log("deleteResponse");
-    console.log(id);
+    this.props.deleteResponse(id, this.props.token_details.token);
   }
 
   editResponse(event, id) {
@@ -99,26 +104,30 @@ class Thread extends Component {
                       this.props.thread.creator
                     )}
                   </div>
-                  <div className="col-lg-6 float-right">
-                    <span className="float-lg-right">
-                      <button
-                        className="btn btn-info"
-                        onClick={event => {
-                          this.editThread(event, this.props.thread.id);
-                        }}
-                      >
-                        <span className="fa fa-pencil" /> Edit
-                      </button>
-                      <button
-                        onClick={event => {
-                          this.deleteThread(event, this.props.thread.id);
-                        }}
-                        className="btn btn-danger"
-                      >
-                        <span className="fa fa-trash" /> Delete
-                      </button>
-                    </span>
-                  </div>
+                  {this.props.token_details.authenticated &&
+                    this.props.token_details.user_id ===
+                      this.props.thread.creator && (
+                      <div className="col-lg-6 float-right">
+                        <span className="float-lg-right">
+                          <button
+                            className="btn btn-info"
+                            onClick={event => {
+                              this.editResponse(event, this.props.thread.id);
+                            }}
+                          >
+                            <span className="fa fa-pencil" /> Edit
+                          </button>
+                          <button
+                            onClick={event => {
+                              this.deleteResponse(event, this.props.thread.id);
+                            }}
+                            className="btn btn-danger"
+                          >
+                            <span className="fa fa-trash" /> Delete
+                          </button>
+                        </span>
+                      </div>
+                    )}
                 </div>
               </td>
             </tr>
@@ -132,39 +141,43 @@ class Thread extends Component {
                     <div className="row">
                       <div className="col-lg-6">
                         User:{" "}
-                        {this.props.users[response.responder] ? (
+                        {this.props.users[response.creator] ? (
                           <Link
                             to={`/users/${
-                              this.props.users[response.responder].id
+                              this.props.users[response.creator].id
                             }`}
                           >
-                            {this.props.users[response.responder].username}
+                            {this.props.users[response.creator].username}
                           </Link>
                         ) : (
-                          response.responder
+                          response.creator
                         )}
                       </div>
 
-                      <div className="col-lg-6 float-right">
-                        <span className="float-lg-right">
-                          <button
-                            className="btn btn-info"
-                            onClick={event => {
-                              this.editResponse(event, response.id);
-                            }}
-                          >
-                            <span className="fa fa-pencil" /> Edit
-                          </button>
-                          <button
-                            onClick={event => {
-                              this.deleteResponse(event, response.id);
-                            }}
-                            className="btn btn-danger"
-                          >
-                            <span className="fa fa-trash" /> Delete
-                          </button>
-                        </span>
-                      </div>
+                      {this.props.token_details.authenticated &&
+                        this.props.token_details.user_id ===
+                          response.creator && (
+                          <div className="col-lg-6 float-right">
+                            <span className="float-lg-right">
+                              <button
+                                className="btn btn-info"
+                                onClick={event => {
+                                  this.editResponse(event, response.id);
+                                }}
+                              >
+                                <span className="fa fa-pencil" /> Edit
+                              </button>
+                              <button
+                                onClick={event => {
+                                  this.deleteResponse(event, response.id);
+                                }}
+                                className="btn btn-danger"
+                              >
+                                <span className="fa fa-trash" /> Delete
+                              </button>
+                            </span>
+                          </div>
+                        )}
                     </div>
                   </td>
                 </tr>
@@ -181,7 +194,7 @@ class Thread extends Component {
             ? this.props.forums[this.props.thread.forum].name
             : this.props.thread.forum}
         </Link>
-        {this.props.authenticated && (
+        {this.props.token_details.authenticated && (
           <div>
             <Response thread={this.props.match.params.id} />
           </div>
@@ -195,7 +208,7 @@ function mapStateToProps(state) {
   return {
     thread: state.thread,
     responses: state.responses,
-    authenticated: state.token_details.authenticated,
+    token_details: state.token_details,
     users: state.users,
     forums: state.forums
   };
@@ -205,5 +218,7 @@ export default connect(mapStateToProps, {
   fetchThread,
   fetchResponses,
   fetchUser,
-  fetchForum
+  fetchForum,
+  deleteThread,
+  deleteResponse
 })(Thread);

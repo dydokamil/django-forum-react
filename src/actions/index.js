@@ -16,7 +16,9 @@ export const FETCH_USER = "fetch_user";
 export const CREATE_THREAD = "create_thread";
 export const CLEAR_RESPONSES = "clear_responses";
 export const FETCH_RECENT_TOPICS = "fetch_recent_topics";
-export const ADD_USER_INFO = "add_user_info";
+export const CLEAR_RESPONSE_RESULT = "clear_response_result";
+export const DELETE_THREAD = "delete_thread";
+export const DELETE_RESPONSE = "delete_response";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -100,20 +102,17 @@ export function clearResponses() {
   };
 }
 
+export function clearResponseResult() {
+  return {
+    type: CLEAR_RESPONSE_RESULT
+  };
+}
+
 export function fetchToken(values) {
   const request = axios.post(`${ROOT_URL}/rest/api-token-auth/`, values);
 
   return {
     type: SET_TOKEN,
-    payload: request
-  };
-}
-
-export function addUserInfo(username) {
-  const request = axios.get(`${ROOT_URL}/rest/get_user_id/${username}`);
-
-  return {
-    type: ADD_USER_INFO,
     payload: request
   };
 }
@@ -141,6 +140,40 @@ export function signUp(values) {
 
   return {
     type: SIGN_UP,
+    payload: request
+  };
+}
+
+export function deleteResponse(response_id, token) {
+  let config = {
+    headers: { Authorization: "Token " + token }
+  };
+
+  const request = axios.delete(
+    `${ROOT_URL}/rest/threadresponses/${response_id}/`,
+    config
+  );
+
+  return {
+    type: DELETE_RESPONSE,
+    payload: request,
+    id: response_id
+  };
+}
+
+export function deleteThread(thread_id, token) {
+  let config = {
+    headers: { Authorization: "Token " + token }
+  };
+
+  const request = axios.delete(
+    `${ROOT_URL}/rest/threads/${thread_id}/`,
+    {},
+    config
+  );
+
+  return {
+    type: DELETE_THREAD,
     payload: request
   };
 }

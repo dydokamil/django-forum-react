@@ -55,7 +55,7 @@ class Response extends Component {
         )}
         {this.props.response_result.errors && (
           <div style={{ marginTop: "1rem" }} className="alert alert-danger">
-            {this.props.response_result.errors.message}
+            {this.props.response_result.errors}
           </div>
         )}
       </div>

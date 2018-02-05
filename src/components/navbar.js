@@ -53,10 +53,20 @@ class Navbar extends Component {
             </li>
 
             <li className="nav-item">
-              <Link className="nav-link" to="/signup">
-                <span className="fa fa-user-plus" />
-                Sign up
-              </Link>
+              {!this.props.authenticated ? (
+                <Link className="nav-link" to="/signup">
+                  <span className="fa fa-user-plus" />
+                  Sign up
+                </Link>
+              ) : (
+                <Link
+                  className="nav-link"
+                  to={`/users/${this.props.token_details.user_id}`}
+                >
+                  <span className="fa fa-user" />{" "}
+                  {this.props.token_details.username}
+                </Link>
+              )}
             </li>
           </ul>
         </div>
