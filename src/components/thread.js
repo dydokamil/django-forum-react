@@ -6,7 +6,9 @@ import {
   fetchThread,
   fetchForum,
   deleteResponse,
-  deleteThread
+  deleteThread,
+  addEditedResponse,
+  removeEditedResponse
 } from "../actions";
 import { Link } from "react-router-dom";
 import Response from "./response";
@@ -18,6 +20,9 @@ class Thread extends Component {
 
     this.deleteThread = this.deleteThread.bind(this);
     this.deleteResponse = this.deleteResponse.bind(this);
+
+    this.editResponse = this.editResponse.bind(this);
+    this.editThread = this.editThread.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +54,7 @@ class Thread extends Component {
   }
 
   editResponse(event, id) {
+    this.props.addEditedResponse(id);
     console.log("editResponse");
     console.log(id);
   }
@@ -134,52 +140,62 @@ class Thread extends Component {
             {_.map(this.props.responses, response => {
               return (
                 <tr key={response.id}>
-                  <td>
-                    <div>{response.created_datetime}</div>
-                    <div>{response.message}</div>
-                    <hr />
-                    <div className="row">
-                      <div className="col-lg-6">
-                        User:{" "}
-                        {this.props.users[response.creator] ? (
-                          <Link
-                            to={`/users/${
-                              this.props.users[response.creator].id
-                            }`}
-                          >
-                            {this.props.users[response.creator].username}
-                          </Link>
-                        ) : (
-                          response.creator
-                        )}
-                      </div>
+                  {!_.includes(this.props.edited_responses, response.id) ? (
+                    <td>
+                      <div>{response.created_datetime}</div>
+                      <div>{response.message}</div>
+                      <hr />
+                      <div className="row">
+                        <div className="col-lg-6">
+                          User:{" "}
+                          {this.props.users[response.creator] ? (
+                            <Link
+                              to={`/users/${
+                                this.props.users[response.creator].id
+                              }`}
+                            >
+                              {this.props.users[response.creator].username}
+                            </Link>
+                          ) : (
+                            response.creator
+                          )}
+                        </div>
 
-                      {this.props.token_details.authenticated &&
-                        this.props.token_details.user_id ===
-                          response.creator && (
-                          <div className="col-lg-6 float-right">
-                            <span className="float-lg-right">
-                              <button
-                                className="btn btn-info"
-                                onClick={event => {
-                                  this.editResponse(event, response.id);
-                                }}
-                              >
-                                <span className="fa fa-pencil" /> Edit
-                              </button>
-                              <button
-                                onClick={event => {
-                                  this.deleteResponse(event, response.id);
-                                }}
-                                className="btn btn-danger"
-                              >
-                                <span className="fa fa-trash" /> Delete
-                              </button>
-                            </span>
-                          </div>
-                        )}
-                    </div>
-                  </td>
+                        {this.props.token_details.authenticated &&
+                          this.props.token_details.user_id ===
+                            response.creator && (
+                            <div className="col-lg-6 float-right">
+                              <span className="float-lg-right">
+                                <button
+                                  className="btn btn-info"
+                                  onClick={event => {
+                                    this.editResponse(event, response.id);
+                                  }}
+                                >
+                                  <span className="fa fa-pencil" /> Edit
+                                </button>
+                                <button
+                                  onClick={event => {
+                                    this.deleteResponse(event, response.id);
+                                  }}
+                                  className="btn btn-danger"
+                                >
+                                  <span className="fa fa-trash" /> Delete
+                                </button>
+                              </span>
+                            </div>
+                          )}
+                      </div>
+                    </td>
+                  ) : (
+                    <td>
+                      <Response
+                        message={response.message}
+                        response_id={response.id}
+                        thread={this.props.thread.id}
+                      />
+                    </td>
+                  )}
                 </tr>
               );
             })}
@@ -210,7 +226,8 @@ function mapStateToProps(state) {
     responses: state.responses,
     token_details: state.token_details,
     users: state.users,
-    forums: state.forums
+    forums: state.forums,
+    edited_responses: state.edited_responses
   };
 }
 
@@ -220,5 +237,7 @@ export default connect(mapStateToProps, {
   fetchUser,
   fetchForum,
   deleteThread,
-  deleteResponse
+  deleteResponse,
+  addEditedResponse,
+  removeEditedResponse
 })(Thread);

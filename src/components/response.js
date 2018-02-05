@@ -1,11 +1,22 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { respond, fetchResponses } from "../actions";
+import {
+  respond,
+  fetchResponses,
+  editResponse,
+  removeEditedResponse,
+  changeMessage
+} from "../actions";
 
 class Response extends Component {
   constructor(props) {
     super(props);
-    this.state = { message: "" };
+    if (props.message) {
+      this.state = { message: props.message };
+    } else {
+      this.state = { message: "" };
+    }
+
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -17,15 +28,28 @@ class Response extends Component {
   handleSubmit(event) {
     event.preventDefault();
 
-    this.props
-      .respond(
-        this.props.thread,
+    if (this.props.message) {
+      // editing response
+      this.props.editResponse(
+        this.props.response_id,
         this.state.message,
         this.props.token_details.token
-      )
-      .then(() => {
-        this.props.fetchResponses(this.props.thread);
-      });
+      );
+      this.props.changeMessage(this.props.response_id, this.state.message);
+
+      this.props.removeEditedResponse(this.props.response_id);
+    } else {
+      // new response
+      this.props
+        .respond(
+          this.props.thread,
+          this.state.message,
+          this.props.token_details.token
+        )
+        .then(() => {
+          this.props.fetchResponses(this.props.thread);
+        });
+    }
   }
 
   render() {
@@ -40,13 +64,23 @@ class Response extends Component {
               onChange={this.handleChange}
             />
           </div>
-          <button
-            disabled={this.state.message === ""}
-            type="submit"
-            className="btn btn-success"
-          >
-            <span className="fa fa-share" /> Respond
-          </button>
+          {!this.props.message ? (
+            <button
+              disabled={this.state.message === ""}
+              type="submit"
+              className="btn btn-success"
+            >
+              <span className="fa fa-share" /> Respond
+            </button>
+          ) : (
+            <button
+              disabled={this.state.message === ""}
+              type="submit"
+              className="btn btn-warning"
+            >
+              <span className="fa fa-pencil" /> Edit
+            </button>
+          )}
         </form>
         {this.props.response_result.msg && (
           <div style={{ marginTop: "1rem" }} className="alert alert-success">
@@ -70,4 +104,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { respond, fetchResponses })(Response);
+export default connect(mapStateToProps, {
+  respond,
+  fetchResponses,
+  editResponse,
+  removeEditedResponse,
+  changeMessage
+})(Response);

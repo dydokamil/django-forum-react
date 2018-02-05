@@ -10,6 +10,7 @@ import responseReducer from "./respond_reducer";
 import userReducer from "./user_reducer";
 import createThreadReducer from "./create_thread_reducer";
 import recentTopicsReducer from "./recent_topics_reducer";
+import editedResponsesReducer from "./edited_responses_reducer";
 import { reducer as formReducer } from "redux-form";
 
 const rootReducer = combineReducers({
@@ -24,7 +25,8 @@ const rootReducer = combineReducers({
   response_result: responseReducer,
   users: userReducer,
   create_thread_details: createThreadReducer,
-  recent_topics: recentTopicsReducer
+  recent_topics: recentTopicsReducer,
+  edited_responses: editedResponsesReducer
 });
 
 export default rootReducer;

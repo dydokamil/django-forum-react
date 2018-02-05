@@ -7,6 +7,8 @@ export const FETCH_THREADS = "fetch_threads";
 export const FETCH_THREADS_USER = "fetch_threads_user";
 export const FETCH_THREAD = "fetch_thread";
 export const FETCH_RESPONSES = "fetch_responses";
+export const CLEAR_RESPONSES = "clear_responses";
+export const EDIT_RESPONSE = "edit_response";
 export const SET_TOKEN = "set_token";
 export const UNSET_TOKEN = "unset_token";
 export const SIGN_UP = "sign_up";
@@ -14,11 +16,13 @@ export const GET_TOKEN = "get_token";
 export const RESPOND = "respond_thread";
 export const FETCH_USER = "fetch_user";
 export const CREATE_THREAD = "create_thread";
-export const CLEAR_RESPONSES = "clear_responses";
 export const FETCH_RECENT_TOPICS = "fetch_recent_topics";
 export const CLEAR_RESPONSE_RESULT = "clear_response_result";
 export const DELETE_THREAD = "delete_thread";
 export const DELETE_RESPONSE = "delete_response";
+export const ADD_EDITED_RESPONSE = "add_edited_response";
+export const REMOVE_EDITED_RESPONSE = "remove_edited_response";
+export const CHANGE_MESSAGE = "change_message";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -102,6 +106,28 @@ export function clearResponses() {
   };
 }
 
+export function addEditedResponse(id) {
+  return {
+    type: ADD_EDITED_RESPONSE,
+    id: id
+  };
+}
+
+export function changeMessage(id, message) {
+  return {
+    type: CHANGE_MESSAGE,
+    message: message,
+    id: id
+  };
+}
+
+export function removeEditedResponse(id) {
+  return {
+    type: REMOVE_EDITED_RESPONSE,
+    id: id
+  };
+}
+
 export function clearResponseResult() {
   return {
     type: CLEAR_RESPONSE_RESULT
@@ -141,6 +167,22 @@ export function signUp(values) {
   return {
     type: SIGN_UP,
     payload: request
+  };
+}
+
+export function editResponse(id, message, token) {
+  let config = {
+    headers: { Authorization: "Token " + token }
+  };
+  const request = axios.put(
+    `${ROOT_URL}/rest/threadresponses/${id}/`,
+    { message },
+    config
+  );
+  return {
+    type: EDIT_RESPONSE,
+    payload: request,
+    id: id
   };
 }
 
