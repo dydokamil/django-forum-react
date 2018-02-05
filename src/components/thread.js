@@ -40,8 +40,8 @@ class Thread extends Component {
   }
 
   deleteThread(event, id) {
-    console.log("deleteThread");
     this.props.deleteThread(id, this.props.token_details.token);
+    this.props.history.push(`/forums/${this.props.thread.forum}`);
   }
 
   deleteResponse(event, id) {
@@ -112,14 +112,14 @@ class Thread extends Component {
                           <button
                             className="btn btn-info"
                             onClick={event => {
-                              this.editResponse(event, this.props.thread.id);
+                              this.editThread(event, this.props.thread.id);
                             }}
                           >
                             <span className="fa fa-pencil" /> Edit
                           </button>
                           <button
                             onClick={event => {
-                              this.deleteResponse(event, this.props.thread.id);
+                              this.deleteThread(event, this.props.thread.id);
                             }}
                             className="btn btn-danger"
                           >

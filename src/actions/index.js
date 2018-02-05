@@ -168,13 +168,13 @@ export function deleteThread(thread_id, token) {
 
   const request = axios.delete(
     `${ROOT_URL}/rest/threads/${thread_id}/`,
-    {},
     config
   );
 
   return {
     type: DELETE_THREAD,
-    payload: request
+    payload: request,
+    id: thread_id
   };
 }
 
