@@ -16,6 +16,7 @@ export const FETCH_USER = "fetch_user";
 export const CREATE_THREAD = "create_thread";
 export const CLEAR_RESPONSES = "clear_responses";
 export const FETCH_RECENT_TOPICS = "fetch_recent_topics";
+export const ADD_USER_INFO = "add_user_info";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -104,6 +105,15 @@ export function fetchToken(values) {
 
   return {
     type: SET_TOKEN,
+    payload: request
+  };
+}
+
+export function addUserInfo(username) {
+  const request = axios.get(`${ROOT_URL}/rest/get_user_id/${username}`);
+
+  return {
+    type: ADD_USER_INFO,
     payload: request
   };
 }

@@ -13,8 +13,6 @@ class ForumsList extends Component {
   }
 
   render() {
-    console.log(this.props.recent_topics);
-
     if (_.isEmpty(this.props.forums)) {
       return <div>Loading...</div>;
     }

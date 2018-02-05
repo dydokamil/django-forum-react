@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Field, reduxForm } from "redux-form";
-import { fetchToken } from "../actions";
+import { fetchToken, addUserInfo } from "../actions";
 import { connect } from "react-redux";
 import _ from "lodash";
 
@@ -28,6 +28,7 @@ class LoginForm extends Component {
   submit(values) {
     this.props.fetchToken(values).then(() => {
       if (!this.props.token_details.error) {
+        this.props.addUserInfo(values.username);
         this.props.history.goBack();
       }
     });
@@ -93,6 +94,6 @@ function mapStateToProps(state) {
   return { token_details: state.token_details };
 }
 
-export default connect(mapStateToProps, { fetchToken })(
+export default connect(mapStateToProps, { fetchToken, addUserInfo })(
   reduxForm({ form: "loginform" })(LoginForm)
 );

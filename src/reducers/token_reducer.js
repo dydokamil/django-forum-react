@@ -1,4 +1,4 @@
-import { UNSET_TOKEN, GET_TOKEN, SET_TOKEN } from "../actions";
+import { UNSET_TOKEN, GET_TOKEN, SET_TOKEN, ADD_USER_INFO } from "../actions";
 import Cookies from "universal-cookie";
 
 const cookies = new Cookies();
@@ -22,6 +22,13 @@ export default function(state = INITIAL_STATE, action) {
         token: action.payload.data.token,
         authenticated: true,
         error: null
+      };
+
+    case ADD_USER_INFO:
+      return {
+        ...state,
+        user_id: action.payload.data.id,
+        username: action.payload.data.username
       };
 
     case UNSET_TOKEN:
