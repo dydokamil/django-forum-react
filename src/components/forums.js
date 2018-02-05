@@ -1,18 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchForums } from "../actions";
-import { fetchSections } from "../actions";
+import { fetchForums, fetchRecentTopics, fetchSections } from "../actions";
 import { Link } from "react-router-dom";
 import _ from "lodash";
 // import { Link } from "react-router-dom";
 
 class ForumsList extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchForums();
     this.props.fetchSections();
+    this.props.fetchRecentTopics();
   }
 
   render() {
+    console.log(this.props.recent_topics);
+
     if (_.isEmpty(this.props.forums)) {
       return <div>Loading...</div>;
     }
@@ -43,7 +45,20 @@ class ForumsList extends Component {
                       </div>
                       <div>{forum.description}</div>
                     </td>
-                    <td>Recent topic placeholder</td>
+                    <td>
+                      {this.props.recent_topics &&
+                      this.props.recent_topics[forum.id] ? (
+                        <Link
+                          to={`/threads/${
+                            this.props.recent_topics[forum.id].id
+                          }`}
+                        >
+                          {this.props.recent_topics[forum.id].name}
+                        </Link>
+                      ) : (
+                        "No recent threads."
+                      )}
+                    </td>
                     <td>{forum.thread_set.length}</td>
                   </tr>
                 );
@@ -57,10 +72,15 @@ class ForumsList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { forums: state.forums, sections: state.sections };
+  return {
+    forums: state.forums,
+    sections: state.sections,
+    recent_topics: state.recent_topics
+  };
 }
 
 export default connect(mapStateToProps, {
   fetchForums,
-  fetchSections
+  fetchSections,
+  fetchRecentTopics
 })(ForumsList);

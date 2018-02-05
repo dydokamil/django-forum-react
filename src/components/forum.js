@@ -6,7 +6,7 @@ import _ from "lodash";
 // import { Link } from "react-router-dom";
 
 class Forum extends Component {
-  componentDidMount() {
+  componentWillMount() {
     this.props.fetchThreads(this.props.match.params.id);
   }
 

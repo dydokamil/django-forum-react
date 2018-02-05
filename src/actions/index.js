@@ -4,6 +4,7 @@ export const FETCH_FORUMS = "fetch_forums";
 export const FETCH_FORUM = "fetch_forum";
 export const FETCH_SECTIONS = "fetch_sections";
 export const FETCH_THREADS = "fetch_threads";
+export const FETCH_THREADS_USER = "fetch_threads_user";
 export const FETCH_THREAD = "fetch_thread";
 export const FETCH_RESPONSES = "fetch_responses";
 export const SET_TOKEN = "set_token";
@@ -14,6 +15,7 @@ export const RESPOND = "respond_thread";
 export const FETCH_USER = "fetch_user";
 export const CREATE_THREAD = "create_thread";
 export const CLEAR_RESPONSES = "clear_responses";
+export const FETCH_RECENT_TOPICS = "fetch_recent_topics";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -67,7 +69,7 @@ export function fetchManyThreads(ids) {
     params: { threads: ids }
   });
   return {
-    type: FETCH_THREADS,
+    type: FETCH_THREADS_USER,
     payload: request
   };
 }
@@ -179,6 +181,15 @@ export function newThread(forum, name, message, token) {
 
   return {
     type: CREATE_THREAD,
+    payload: request
+  };
+}
+
+export function fetchRecentTopics() {
+  const request = axios.get(`${ROOT_URL}/rest/forum_latest/`);
+
+  return {
+    type: FETCH_RECENT_TOPICS,
     payload: request
   };
 }
