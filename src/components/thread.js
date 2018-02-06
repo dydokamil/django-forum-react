@@ -12,6 +12,7 @@ import {
   addEditedThread,
   removeEditedThread
 } from "../actions";
+import { formatDateTime } from "../utils";
 import { Link } from "react-router-dom";
 import Response from "./response";
 import _ from "lodash";
@@ -86,7 +87,11 @@ class Thread extends Component {
             <tr>
               {!_.includes(this.props.edited_threads, this.props.thread.id) ? (
                 <td>
-                  <div>{this.props.thread.created_datetime}</div>
+                  <div>
+                    {this.props.thread.created_datetime
+                      ? formatDateTime(this.props.thread.created_datetime)
+                      : ""}
+                  </div>
                   <div>
                     {this.props.thread.message !== "" ? (
                       this.props.thread.message
@@ -151,7 +156,7 @@ class Thread extends Component {
                 <tr key={response.id}>
                   {!_.includes(this.props.edited_responses, response.id) ? (
                     <td>
-                      <div>{response.created_datetime}</div>
+                      <div>{formatDateTime(response.created_datetime)}</div>
                       <div>{response.message}</div>
                       <hr />
                       <div className="row">

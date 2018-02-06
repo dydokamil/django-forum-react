@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { fetchThreads } from "../actions";
 import { Link } from "react-router-dom";
 import _ from "lodash";
+import { formatDateTime } from "../utils";
 // import { Link } from "react-router-dom";
 
 class Forum extends Component {
@@ -42,7 +43,7 @@ class Forum extends Component {
                     <Link to={`/threads/${thread.id}`}>{thread.name}</Link>
                   </td>
                   <td>{thread.threadresponse_set.length}</td>
-                  <td>{thread.last_activity}</td>
+                  <td>{formatDateTime(thread.last_activity)}</td>
                 </tr>
               );
             })}

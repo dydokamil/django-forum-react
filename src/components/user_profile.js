@@ -6,6 +6,7 @@ import {
   fetchManyResponses,
   clearResponses
 } from "../actions";
+import { formatDateTime } from "../utils";
 import _ from "lodash";
 import { Link } from "react-router-dom";
 
@@ -101,7 +102,9 @@ class UserProfile extends Component {
                       </h6>
                       <small>
                         {this.props.responses[response]
-                          ? this.props.responses[response].created_datetime
+                          ? formatDateTime(
+                              this.props.responses[response].created_datetime
+                            )
                           : "Loading..."}
                       </small>
                       <div>
@@ -139,7 +142,9 @@ class UserProfile extends Component {
                         <h6>{this.props.threads[thread].name}</h6>
                       </Link>
                       <small>
-                        {this.props.threads[thread].created_datetime}
+                        {formatDateTime(
+                          this.props.threads[thread].created_datetime
+                        )}
                       </small>
                       <hr />
                       <div>{this.props.threads[thread].message}</div>
