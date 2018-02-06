@@ -9,6 +9,7 @@ export const FETCH_THREAD = "fetch_thread";
 export const FETCH_RESPONSES = "fetch_responses";
 export const CLEAR_RESPONSES = "clear_responses";
 export const EDIT_RESPONSE = "edit_response";
+export const EDIT_THREAD = "edit_thread";
 export const SET_TOKEN = "set_token";
 export const UNSET_TOKEN = "unset_token";
 export const SIGN_UP = "sign_up";
@@ -22,7 +23,10 @@ export const DELETE_THREAD = "delete_thread";
 export const DELETE_RESPONSE = "delete_response";
 export const ADD_EDITED_RESPONSE = "add_edited_response";
 export const REMOVE_EDITED_RESPONSE = "remove_edited_response";
+export const ADD_EDITED_THREAD = "add_edited_thread";
+export const REMOVE_EDITED_THREAD = "remove_edited_thread";
 export const CHANGE_MESSAGE = "change_message";
+export const CHANGE_MESSAGE_THREAD = "change_message_thread";
 
 const ROOT_URL = "http://localhost:8000/forumapp";
 
@@ -113,9 +117,31 @@ export function addEditedResponse(id) {
   };
 }
 
+export function addEditedThread(id) {
+  return {
+    type: ADD_EDITED_THREAD,
+    id: id
+  };
+}
+
+export function removeEditedThread(id) {
+  return {
+    type: REMOVE_EDITED_THREAD,
+    id: id
+  };
+}
+
 export function changeMessage(id, message) {
   return {
     type: CHANGE_MESSAGE,
+    message: message,
+    id: id
+  };
+}
+
+export function changeMessageThread(id, message) {
+  return {
+    type: CHANGE_MESSAGE_THREAD,
     message: message,
     id: id
   };
@@ -181,6 +207,22 @@ export function editResponse(id, message, token) {
   );
   return {
     type: EDIT_RESPONSE,
+    payload: request,
+    id: id
+  };
+}
+
+export function editThread(id, message, token) {
+  let config = {
+    headers: { Authorization: "Token " + token }
+  };
+  const request = axios.put(
+    `${ROOT_URL}/rest/threads/${id}/`,
+    { message },
+    config
+  );
+  return {
+    type: EDIT_THREAD,
     payload: request,
     id: id
   };

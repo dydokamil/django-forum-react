@@ -8,7 +8,9 @@ import {
   deleteResponse,
   deleteThread,
   addEditedResponse,
-  removeEditedResponse
+  removeEditedResponse,
+  addEditedThread,
+  removeEditedThread
 } from "../actions";
 import { Link } from "react-router-dom";
 import Response from "./response";
@@ -55,13 +57,10 @@ class Thread extends Component {
 
   editResponse(event, id) {
     this.props.addEditedResponse(id);
-    console.log("editResponse");
-    console.log(id);
   }
 
   editThread(event, id) {
-    console.log("editThread");
-    console.log(id);
+    this.props.addEditedThread(id);
   }
 
   render() {
@@ -85,57 +84,67 @@ class Thread extends Component {
           </thead>
           <tbody>
             <tr>
-              <td>
-                <div>{this.props.thread.created_datetime}</div>
-                <div>
-                  {this.props.thread.message !== "" ? (
-                    this.props.thread.message
-                  ) : (
-                    <div className="text-danger">No content.</div>
-                  )}
-                </div>
-                <hr />
-                <div className="row">
-                  <div className="col-lg-6">
-                    User:{" "}
-                    {this.props.users[this.props.thread.creator] ? (
-                      <Link
-                        to={`/users/${
-                          this.props.users[this.props.thread.creator].id
-                        }`}
-                      >
-                        {this.props.users[this.props.thread.creator].username}
-                      </Link>
+              {!_.includes(this.props.edited_threads, this.props.thread.id) ? (
+                <td>
+                  <div>{this.props.thread.created_datetime}</div>
+                  <div>
+                    {this.props.thread.message !== "" ? (
+                      this.props.thread.message
                     ) : (
-                      this.props.thread.creator
+                      <div className="text-danger">No content.</div>
                     )}
                   </div>
-                  {this.props.token_details.authenticated &&
-                    this.props.token_details.user_id ===
-                      this.props.thread.creator && (
-                      <div className="col-lg-6 float-right">
-                        <span className="float-lg-right">
-                          <button
-                            className="btn btn-info"
-                            onClick={event => {
-                              this.editThread(event, this.props.thread.id);
-                            }}
-                          >
-                            <span className="fa fa-pencil" /> Edit
-                          </button>
-                          <button
-                            onClick={event => {
-                              this.deleteThread(event, this.props.thread.id);
-                            }}
-                            className="btn btn-danger"
-                          >
-                            <span className="fa fa-trash" /> Delete
-                          </button>
-                        </span>
-                      </div>
-                    )}
-                </div>
-              </td>
+                  <hr />
+                  <div className="row">
+                    <div className="col-lg-6">
+                      User:{" "}
+                      {this.props.users[this.props.thread.creator] ? (
+                        <Link
+                          to={`/users/${
+                            this.props.users[this.props.thread.creator].id
+                          }`}
+                        >
+                          {this.props.users[this.props.thread.creator].username}
+                        </Link>
+                      ) : (
+                        this.props.thread.creator
+                      )}
+                    </div>
+                    {this.props.token_details.authenticated &&
+                      this.props.token_details.user_id ===
+                        this.props.thread.creator && (
+                        <div className="col-lg-6 float-right">
+                          <span className="float-lg-right">
+                            <button
+                              className="btn btn-info"
+                              onClick={event => {
+                                this.editThread(event, this.props.thread.id);
+                              }}
+                            >
+                              <span className="fa fa-pencil" /> Edit
+                            </button>
+                            <button
+                              onClick={event => {
+                                this.deleteThread(event, this.props.thread.id);
+                              }}
+                              className="btn btn-danger"
+                            >
+                              <span className="fa fa-trash" /> Delete
+                            </button>
+                          </span>
+                        </div>
+                      )}
+                  </div>
+                </td>
+              ) : (
+                <td>
+                  <Response
+                    message={this.props.thread.message}
+                    thread={this.props.thread.id}
+                    editingThread={true}
+                  />
+                </td>
+              )}
             </tr>
             {_.map(this.props.responses, response => {
               return (
@@ -193,6 +202,7 @@ class Thread extends Component {
                         message={response.message}
                         response_id={response.id}
                         thread={this.props.thread.id}
+                        editingResponse={true}
                       />
                     </td>
                   )}
@@ -227,7 +237,8 @@ function mapStateToProps(state) {
     token_details: state.token_details,
     users: state.users,
     forums: state.forums,
-    edited_responses: state.edited_responses
+    edited_responses: state.edited_responses,
+    edited_threads: state.edited_threads
   };
 }
 
@@ -239,5 +250,7 @@ export default connect(mapStateToProps, {
   deleteThread,
   deleteResponse,
   addEditedResponse,
-  removeEditedResponse
+  removeEditedResponse,
+  addEditedThread,
+  removeEditedThread
 })(Thread);

@@ -22,7 +22,6 @@ export default function(state = {}, action) {
       let d = {};
       d[response.id] = response;
 
-      console.log(_.assign(_.omit(action.id), response));
       return _.assign(_.omit(state, action.id), d);
 
     case CLEAR_RESPONSES:
