@@ -61,7 +61,9 @@ class UserProfile extends Component {
     return (
       <div className="container">
         <h1>{user.username}</h1>
-        <div>Banned until: {user.banned_until}</div>
+        {user.banned_until && (
+          <div>Banned until: {formatDateTime(user.banned_until)}</div>
+        )}
         <div>Can ban users: {user.can_ban ? "Yes" : "No"}</div>
         <hr />
 
