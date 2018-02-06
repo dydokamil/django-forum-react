@@ -28,7 +28,7 @@ export const REMOVE_EDITED_THREAD = "remove_edited_thread";
 export const CHANGE_MESSAGE = "change_message";
 export const CHANGE_MESSAGE_THREAD = "change_message_thread";
 
-const ROOT_URL = "http://localhost:8000/forumapp";
+const ROOT_URL = "https://django-forum-rest.herokuapp.com/forumapp";
 
 export function fetchForums() {
   const request = axios.get(`${ROOT_URL}/rest/forums/`);
