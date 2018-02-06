@@ -1,5 +1,5 @@
 import { UNSET_TOKEN, GET_TOKEN, SET_TOKEN } from "../actions";
-import Cookies from "universal-cookie";
+// import Cookies from "universal-cookie";
 
 // const cookies = new Cookies();
 //
