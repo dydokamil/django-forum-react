@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import { fetchToken } from "../actions";
 import { connect } from "react-redux";
 import _ from "lodash";
+import NavbarVertical from "./navbar_vertical";
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div className="form-group">
@@ -45,45 +46,52 @@ class LoginForm extends Component {
 
     return (
       <div className="container">
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit(this.submit)}>
-          {token_details.error && (
-            <div className="alert alert-danger">
-              {_.map(token_details.error, error => error[0])}
-            </div>
-          )}
-
-          <Field
-            name="username"
-            type="text"
-            component={renderField}
-            label="Username"
-          />
-          <Field
-            name="password"
-            type="password"
-            component={renderField}
-            label="Password"
-          />
-          {error && <strong>{error}</strong>}
-          <div>
-            <button
-              className="btn btn-success"
-              type="submit"
-              disabled={submitting}
-            >
-              Log In
-            </button>
-            <button
-              className="btn btn-warning"
-              type="button"
-              disabled={pristine || submitting}
-              onClick={reset}
-            >
-              Clear Values
-            </button>
+        <div className="row">
+          <div className="col-lg-2">
+            <NavbarVertical />
           </div>
-        </form>
+          <div className="col-lg-10">
+            <h1>Login</h1>
+            <form onSubmit={handleSubmit(this.submit)}>
+              {token_details.error && (
+                <div className="alert alert-danger">
+                  {_.map(token_details.error, error => error[0])}
+                </div>
+              )}
+
+              <Field
+                name="username"
+                type="text"
+                component={renderField}
+                label="Username"
+              />
+              <Field
+                name="password"
+                type="password"
+                component={renderField}
+                label="Password"
+              />
+              {error && <strong>{error}</strong>}
+              <div>
+                <button
+                  className="btn btn-success"
+                  type="submit"
+                  disabled={submitting}
+                >
+                  Log In
+                </button>
+                <button
+                  className="btn btn-warning"
+                  type="button"
+                  disabled={pristine || submitting}
+                  onClick={reset}
+                >
+                  Clear Values
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }

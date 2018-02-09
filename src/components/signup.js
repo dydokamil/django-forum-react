@@ -3,6 +3,7 @@ import { Field, reduxForm } from "redux-form";
 import { signUp } from "../actions";
 import { connect } from "react-redux";
 import _ from "lodash";
+import NavbarVertical from "./navbar_vertical";
 
 const renderField = ({ input, label, type, meta: { touched, error } }) => (
   <div className="form-group">
@@ -42,56 +43,63 @@ class SignupForm extends Component {
 
     return (
       <div className="container">
-        <h1>Sign up</h1>
-        <form onSubmit={handleSubmit(this.submit)}>
-          {sign_up.errors && (
-            <div className="alert alert-danger">
-              {_.map(sign_up.errors, error => <div>{error}</div>)}
-            </div>
-          )}
-          {sign_up.username && (
-            <div className="alert alert-success">
-              User {sign_up.username} created successfully.
-            </div>
-          )}
-
-          <Field
-            name="username"
-            type="text"
-            component={renderField}
-            label="Username"
-          />
-          <Field
-            name="password1"
-            type="password"
-            component={renderField}
-            label="Password"
-          />
-          <Field
-            name="password2"
-            type="password"
-            component={renderField}
-            label="Confirm password"
-          />
-          {error && <strong>{error}</strong>}
-          <div>
-            <button
-              className="btn btn-success"
-              type="submit"
-              disabled={submitting || invalid}
-            >
-              Sign Up
-            </button>
-            <button
-              className="btn btn-warning"
-              type="button"
-              disabled={pristine || submitting}
-              onClick={reset}
-            >
-              Clear Values
-            </button>
+        <div className="row">
+          <div className="col-lg-2">
+            <NavbarVertical />
           </div>
-        </form>
+          <div className="col-lg-10">
+            <h1>Sign up</h1>
+            <form onSubmit={handleSubmit(this.submit)}>
+              {sign_up.errors && (
+                <div className="alert alert-danger">
+                  {_.map(sign_up.errors, error => <div>{error}</div>)}
+                </div>
+              )}
+              {sign_up.username && (
+                <div className="alert alert-success">
+                  User {sign_up.username} created successfully.
+                </div>
+              )}
+
+              <Field
+                name="username"
+                type="text"
+                component={renderField}
+                label="Username"
+              />
+              <Field
+                name="password1"
+                type="password"
+                component={renderField}
+                label="Password"
+              />
+              <Field
+                name="password2"
+                type="password"
+                component={renderField}
+                label="Confirm password"
+              />
+              {error && <strong>{error}</strong>}
+              <div>
+                <button
+                  className="btn btn-success"
+                  type="submit"
+                  disabled={submitting || invalid}
+                >
+                  Sign Up
+                </button>
+                <button
+                  className="btn btn-warning"
+                  type="button"
+                  disabled={pristine || submitting}
+                  onClick={reset}
+                >
+                  Clear Values
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }

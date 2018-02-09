@@ -68,3 +68,15 @@ td {
 .pinned-thread {
   background-color: #efffef;
 }
+
+ul.navbar {
+  list-style-type: none;
+  display: inline-block;
+}
+
+.logo {
+  font-family: times;
+  /* font-size: 14pt; */
+  font-style: italic;
+  color: #aa5555;
+}
