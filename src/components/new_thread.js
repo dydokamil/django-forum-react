@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { newThread } from "../actions";
 import { Field, reduxForm } from "redux-form";
+import NavbarVertical from "./navbar_vertical";
 
 const renderField = ({
   input,
@@ -43,8 +44,6 @@ class NewThread extends Component {
   }
 
   submit(values) {
-    console.log(values);
-
     this.props
       .newThread(
         this.forum,
@@ -60,42 +59,43 @@ class NewThread extends Component {
   }
 
   render() {
-    if (!this.props.token_details) {
-      return <div className="container">Loading...</div>;
-    }
-    if (!this.props.token_details.authenticated) {
-      return (
-        <div className="container">
-          Please log in before entering this page.
-        </div>
-      );
-    }
-    return (
+    return !this.props.token_details ? (
+      <div className="container">Loading...</div>
+    ) : !this.props.token_details.authenticated ? (
+      <div className="container">Please log in before entering this page.</div>
+    ) : (
       <div className="container">
-        <form onSubmit={this.props.handleSubmit(this.submit)}>
-          <Field
-            component={renderField}
-            name="name"
-            label="Topic"
-            className="form-control"
-            type="text"
-          />
-          <Field
-            component={renderField}
-            name="message"
-            label="Message"
-            className="form-control"
-            type="text"
-            textArea={true}
-          />
-          <button
-            disabled={this.props.invalid}
-            className="btn btn-success"
-            type="submit"
-          >
-            <span className="fa fa-plus" /> Submit
-          </button>
-        </form>
+        <div className="row">
+          <div className="col-lg-2">
+            <NavbarVertical />
+          </div>
+          <div className="col-lg-10">
+            <form onSubmit={this.props.handleSubmit(this.submit)}>
+              <Field
+                component={renderField}
+                name="name"
+                label="Topic"
+                className="form-control"
+                type="text"
+              />
+              <Field
+                component={renderField}
+                name="message"
+                label="Message"
+                className="form-control"
+                type="text"
+                textArea={true}
+              />
+              <button
+                disabled={this.props.invalid}
+                className="btn btn-success"
+                type="submit"
+              >
+                <span className="fa fa-plus" /> Submit
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     );
   }
