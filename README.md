@@ -22,3 +22,7 @@ Make sure you have `npm` installed.
     git clone https://github.com/dydokamil/django-forum-react
     cd django-forum-react
     npm install && npm start
+
+## Disclaimer
+
+I take no responsibility for whatever gets posted on https://django-forum-react.herokuapp.com/.
